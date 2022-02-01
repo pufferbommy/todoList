@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { nanoid } from 'nanoid'
 
 // components
 import Todo from './components/Todo'
 
 // icons
-import { AiFillGithub, AiFillTwitterCircle } from 'react-icons/ai'
+import { BsGithub, BsTwitter } from 'react-icons/bs'
 
 const initialState = () => {
   const todos = localStorage.getItem('todos')
@@ -17,6 +17,7 @@ const initialState = () => {
 }
 
 const App = () => {
+  const todoInputRef = useRef()
   const [todo, setTodo] = useState('')
   const [todos, setTodos] = useState(initialState)
   const [selectedTodo, setSelectedTodo] = useState(null)
@@ -26,6 +27,7 @@ const App = () => {
     if (!todo) return
     setTodos((prevTodos) => [{ id: nanoid(), todo, complete: false }, ...prevTodos])
     setTodo('')
+    todoInputRef.current.focus()
   }
 
   useEffect(() => {
@@ -34,12 +36,13 @@ const App = () => {
 
   return (
     <>
-      <header className="w-64 mx-auto mt-8 text-xl font-medium text-center text-gray-900">
-        Todo List
+      <header className="mt-8 text-xl font-medium text-center text-gray-900">
+        TodoList
       </header>
       <div className="flex items-center justify-center mt-6">
         <form onSubmit={onAddTodo} className="flex gap-2 ">
           <input
+            ref={todoInputRef}
             autoFocus
             value={todo}
             onChange={(e) => setTodo(e.target.value)}
@@ -51,11 +54,9 @@ const App = () => {
           </button>
         </form>
       </div>
-      {todos.length > 0 && (
-        <div className="w-[21.3rem] decoration-pink-400 underline text-gray-900  underline-offset-[1.5px] gap-4 mt-4 mx-auto font-sans hover:decoration-pink-500 font-medium transition-colors">
-          Incomplete
-        </div>
-      )}
+      <div className="w-[21.3rem] decoration-pink-400 underline text-gray-900  underline-offset-[1.5px] gap-4 mt-4 mx-auto font-sans         hover:decoration-pink-500 font-medium transition-colors">
+        Incomplete
+      </div>
       <div className="grid grid-cols-1 w-[21.3rem] gap-4 mt-4 mx-auto">
         {todos
           .filter((todo) => !todo.complete)
@@ -70,12 +71,14 @@ const App = () => {
             />
           ))}
       </div>
-      {todos.length > 0 && (
-        <div className="w-[21.3rem] font-medium  decoration-pink-400 underline underline-offset-[1.5px] text-gray-900 gap-4 mt-4 mx-auto hover:decoration-pink-500 transition-colors font-sans">
-          Complete
-        </div>
-      )}
-      <div className="grid grid-cols-1 w-[21.3rem] gap-4 mt-4 mx-auto">
+      <div
+        className={`w-[21.3rem] font-medium  decoration-pink-400 underline underline-offset-[1.5px] text-gray-900 gap-4 ${
+          todos.find((todo) => !todo.complete) ? 'mt-4' : 'mt-0'
+        } mx-auto hover:decoration-pink-500 transition-colors font-sans`}
+      >
+        Completed
+      </div>
+      <div className="grid grid-cols-1 w-[21.3rem] gap-4 mx-auto mt-4">
         {todos
           .filter((todo) => todo.complete)
           .map((todo) => (
@@ -93,10 +96,16 @@ const App = () => {
       <footer className="fixed w-full left-2 bottom-2">
         <div className="flex justify-center gap-1 text-xl text-pink-500 cursor-pointer">
           <a href="https://twitter.com/pufferbommy">
-            <AiFillTwitterCircle className="transition-colors hover:text-pink-400" />
+            <BsTwitter
+              size={'1.25rem'}
+              className="transition-colors hover:text-pink-400"
+            />
           </a>
           <a href="https://github.com/pufferbommy">
-            <AiFillGithub className="transition-colors hover:text-pink-400" />
+            <BsGithub
+              size={'1.25rem'}
+              className="transition-colors hover:text-pink-400"
+            />
           </a>
         </div>
       </footer>

@@ -83,7 +83,7 @@ const Todo = ({
               onChange={(e) =>
                 setEditingTodo({ ...editingTodo, todo: e.target.value })
               }
-              className="w-1/2 text-xl outline-none"
+              className="w-1/2 text-xl outline-none "
             />
           )}
           {!selectedTodo && (
@@ -92,9 +92,9 @@ const Todo = ({
                 onChange={(e) => onCheckChange(e, todo)}
                 defaultChecked={todo.complete}
                 type="checkbox"
-                className="w-4 h-4 mt-1 border-0 cursor-pointer"
+                className="w-4 h-4 border-0 cursor-pointer"
               />
-              <h1 className={'text-xl'}>{todo.todo}</h1>
+              <h1 className={'text-lg'}>{todo.todo}</h1>
             </div>
           )}
           <div className="flex gap-2 ml-auto text-xl">
